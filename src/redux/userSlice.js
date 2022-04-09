@@ -7,6 +7,11 @@ export const updateUser2 = createAsyncThunk("users/update", async (user) => {
     return res.data;
 });
 
+export const deleteUser2 = createAsyncThunk("users/update", async (user) => {
+    const res = await axios.delete("http:///localhost:5000/users/update", user);
+    return res.data;
+});
+
 export const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -42,6 +47,19 @@ export const userSlice = createSlice({
         },
         [updateUser2.rejected]: (state) => {
             state.pending = false;
+            state.error = true;
+        },
+        
+        [deleteUser2.pending]: (state) => {
+            state.pending = true;
+            state.error = false;
+        },
+        [deleteUser2.fulfilled]: (state, action)=> {
+            state.pending = false;
+            state.userInfo = action.payload;
+        },
+        [deleteUser2.rejected]: (state) => {
+            state.pending = null;
             state.error = true;
         }
     }
